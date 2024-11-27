@@ -140,7 +140,7 @@ authController.resetPassword = async (req, res) => {
 
 authController.refreshToken = async (req, res) => {
     try {
-        const { refreshToken } = req.cookies; // Lấy refresh token từ cookie
+        const refreshToken = req.cookies.refreshToken; // Lấy refreshToken từ cookie
         if (!refreshToken) {
             return res.status(401).json({ message: "Refresh token is required" });
         }

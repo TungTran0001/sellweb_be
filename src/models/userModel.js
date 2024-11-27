@@ -68,9 +68,17 @@ userModel.getUserByResetToken = (token) => {
     });
 }
 
-userModel.getUserByRefreshToken = async (refreshToken) => {
-    const [user] = await pool.query("SELECT * FROM users WHERE refresh_token = ?", [refreshToken]);
-    return user;
+userModel.getUserByRefreshToken = (refreshToken) => {
+    return new Promise((resolve, reject) => {
+        pool.query(
+            "SELECT * FROM users WHERE refresh_token = ?",
+            [refreshToken], 
+            (error, result) => {
+                if (error) return reject(error);
+                resolve(result);
+            }
+        );
+    })
 };
 
 userModel.resetPassword = (id, newPassword) => {

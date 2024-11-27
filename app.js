@@ -1,5 +1,4 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 require('dotenv').config();
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
@@ -9,15 +8,15 @@ const apiRouter = require('./src/routes/apiRouter');
 const app = express();
 const PORT = process.env.PORT;
 
-app.use(cors());
+app.use(express.json()); // Đọc dữ liệu JSON từ body
 
-// parse requests of content-type - application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }));
+// Cấu hình CORS
+app.use(cors({
+    origin: "http://localhost:3000", // Chỉ cho phép từ frontend này
+    credentials: true, // Cho phép gửi cookie
+}));
 
-// parse requests of content-type - application/json
-app.use(bodyParser.json());
-
-apiRouter.use(cookieParser());
+app.use(cookieParser()); // Đọc cookie từ các yêu cầu
 
 app.get('/', (req, res) => {
     res.send("Welcome to us");
