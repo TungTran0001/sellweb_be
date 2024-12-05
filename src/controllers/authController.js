@@ -40,13 +40,13 @@ authController.register = async (req, res) => {
         await userModel.saveRefreshToken(user.insertId, refreshToken);
         // Gửi Access Token và Refresh Token về phía client
         res.cookie('accessToken', accessToken, {
-            httpOnly: true,
+            httpOnly: false,
             secure: true,
             sameSite: 'strict',
             expires: new Date(Date.now() + 30 * 60 * 1000) // Access Token expires in 30 minutes.
         });
         res.cookie('refreshToken', refreshToken, {
-            httpOnly: true,
+            httpOnly: false,
             secure: true,
             sameSite: 'strict',
             expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // Refresh Token expires in 7 days
@@ -158,7 +158,7 @@ authController.refreshToken = async (req, res) => {
             const newAccessToken = jsonwebtoken.sign({ id: decoded.id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "30m" });
             // Trả về access token mới cho client
             res.cookie('accessToken', newAccessToken, {
-                httpOnly: true,
+                httpOnly: false,
                 secure: true,
                 sameSite: 'strict',
                 expires: new Date(Date.now() + 30 * 60 * 1000) // Access Token expires in 30 minutes
@@ -180,8 +180,8 @@ authController.logout = async (request, response) => {
         // Xóa refresh token trong cơ sở dữ liệu
         await userModel.deleteRefreshToken(refreshToken);
         // Xóa cookie chứa accessToken và refreshToken
-        response.clearCookie('accessToken', { httpOnly: true, secure: true, sameSite: 'strict' });
-        response.clearCookie('refreshToken', { httpOnly: true, secure: true, sameSite: 'strict' });
+        response.clearCookie('accessToken', { httpOnly: false, secure: true, sameSite: 'strict' });
+        response.clearCookie('refreshToken', { httpOnly: false, secure: true, sameSite: 'strict' });
         response.status(200).json({ message: "Logout successful" });
     } catch (error) {
         console.error(error);
