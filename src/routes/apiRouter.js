@@ -8,6 +8,6 @@ const profileRouter = require('./profileRouter');
 
 apiRouter.use("/auth", authRouter);
 apiRouter.use("/notifications", notificationRouter);
-apiRouter.use("/profile", profileRouter);
+apiRouter.use("/profiles", profileRouter);
 
 module.exports = apiRouter;
