@@ -29,3 +29,20 @@ CREATE TABLE notifications (
                                               -- Thời gian cập nhật thông báo
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
+
+-- create table profiles
+CREATE TABLE profiles (
+    id INT AUTO_INCREMENT PRIMARY KEY,        -- ID duy nhất của profile
+    user_id INT NOT NULL,                     -- Liên kết đến bảng users
+    full_name VARCHAR(255) NOT NULL,          -- Họ và tên người dùng
+    phone_number VARCHAR(15),                 -- Số điện thoại
+    gender ENUM('male', 'female', 'other'),   -- Giới tính
+    date_of_birth DATE,                       -- Ngày sinh
+    address TEXT,                             -- Địa chỉ chi tiết
+    avatar_url VARCHAR(255),                  -- URL ảnh đại diện
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
+                                              -- Thời gian tạo profile
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
+                                              -- Thời gian cập nhật profile
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
