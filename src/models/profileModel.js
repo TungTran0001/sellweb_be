@@ -20,4 +20,23 @@ profileModel.findByUserId = (userId) => {
     })
 }
 
+profileModel.createProfile = (userId) => {
+    return new Promise((resolve, reject) => {
+        const query = `
+            INSERT INTO profiles (user_id, full_name, phone_number, gender, date_of_birth, address, avatar_url, created_at, updated_at)
+            VALUE (?, '', '', '', ?, '', '', NOW(), NOW())
+        `
+        pool.query(
+            query,
+            [userId, null],
+            (error, result) => {
+                if (error) {
+                    reject(error);
+                }
+                resolve(result);
+            }
+        )
+    });
+}
+
 module.exports = profileModel;

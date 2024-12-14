@@ -3,6 +3,7 @@ const { hashSync, genSaltSync, compareSync } = require('bcrypt');
 const nodemailer = require('nodemailer');
 
 const userModel = require('./../models/userModel');
+const profileModel = require('./../models/profileModel');
 const authController = {};
 
 const transporter = nodemailer.createTransport({
@@ -32,6 +33,8 @@ authController.register = async (req, res) => {
         // Tạo người dùng mới trong cơ sơ dữ liệu
         const user = await userModel.create(initialValues);
         console.log("user:", user);
+        // Tạo bản ghi trong bảng `profiles`
+        await profileModel.createProfile(user.insertId);
         // Tạo Access Token với thời gian sống ngắn
         const accessToken = jsonwebtoken.sign({ id: user.id }, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '30m'} );
         // Tạo Refresh Token với thời gian sống dài hơn
