@@ -2,6 +2,7 @@ const express = require('express');
 require('dotenv').config();
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const path = require('path');
 
 const apiRouter = require('./src/routes/apiRouter');
 
@@ -17,6 +18,9 @@ app.use(cors({
 }));
 
 app.use(cookieParser()); // Đọc cookie từ các yêu cầu
+
+// Cho phép truy cập các file tĩnh trong thư mục uploads
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.get('/', (req, res) => {
     res.send("Welcome to us");
