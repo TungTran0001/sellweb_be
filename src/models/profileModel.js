@@ -2,7 +2,7 @@ const pool = require('./../../db');
 
 const profileModel = {};
 
-profileModel.findByUserId = (userId) => {
+profileModel.getProfileByUserId = (userId) => {
     return new Promise((resolve, reject) => {
         const query = `SELECT users.email, profiles.full_name, profiles.phone_number, profiles.gender, profiles.date_of_birth, profiles.address, profiles.avatar_url 
                       FROM profiles 
