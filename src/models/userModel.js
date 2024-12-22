@@ -107,4 +107,22 @@ userModel.deleteRefreshToken = async (refreshToken) => {
     });
 };
 
+userModel.getHeaderInfo = async (userId) => {
+    return new Promise((resolve, reject) => {
+        const query = `SELECT u.username, p.full_name, p.avatar_url 
+                       FROM users u JOIN profiles p 
+                       ON u.id = p.user_id WHERE u.id = ?`;
+        pool.query(
+            query,
+            [userId],
+            (error, result) => {
+                if (error) {
+                    reject(error);
+                }
+                resolve(result);
+            }
+        )
+    })
+}
+
 module.exports = userModel;
