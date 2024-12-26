@@ -8,5 +8,6 @@ const locationController = require('../controllers/locationController');
 
 locationRouter.get('/provinces', locationController.getProvinces);
 locationRouter.get('/districts/:provinceId', locationController.getDistricts);
+locationRouter.get('/wards/:districtId', locationController.getWards);
 
 module.exports = locationRouter;
