@@ -7,5 +7,6 @@ const locationRouter = express.Router();
 const locationController = require('../controllers/locationController');
 
 locationRouter.get('/provinces', locationController.getProvinces);
+locationRouter.get('/districts/:provinceId', locationController.getDistricts);
 
 module.exports = locationRouter;
