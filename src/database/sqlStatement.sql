@@ -51,18 +51,20 @@ CREATE TABLE profiles (
 CREATE TABLE address (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,           -- ID duy nhất của mỗi địa chỉ
     user_id INT NOT NULL,                           -- ID người dùng (liên kết với bảng users)
-    full_name VARCHAR(100) NOT NULL,                -- Họ và tên người nhận
-    phone_number VARCHAR(15) NOT NULL,              -- Số điện thoại liên hệ
-    city VARCHAR(100) NOT NULL,                     -- Tỉnh/Thành phố
-    district VARCHAR(100),                          -- Quận/Huyện
-    ward VARCHAR(100),                           -- Xã/Phường
+    name VARCHAR(255) NOT NULL,                     -- Họ và tên người nhận
+    phone VARCHAR(20) NOT NULL,                     -- Số điện thoại liên hệ
+    province_id INT NOT NULL,                       -- Tỉnh/Thành phố
+    district_id INT NOT NULL,                       -- Quận/Huyện
+    ward_id INT NOT NULL,                           -- Xã/Phường
     specific_address VARCHAR(255) NOT NULL,         -- Địa chỉ cụ thể
-    postal_code VARCHAR(20) NOT NULL,                -- Mã bưu chính
-    country VARCHAR(100) NOT NULL DEFAULT 'Vietnam', -- Quốc gia, mặc định là Việt Nam
+    country VARCHAR(100) NOT NULL DEFAULT 'Vietnam',-- Quốc gia, mặc định là Việt Nam
     is_default BOOLEAN NOT NULL DEFAULT FALSE,      -- Đánh dấu địa chỉ mặc định (true/false)
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  -- Thời gian tạo
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Thời gian tạo
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,  -- Thời gian cập nhật
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE    -- Ràng buộc khóa ngoại
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,    -- Ràng buộc khóa ngoại
+    FOREIGN KEY (province_id) REFERENCES provinces(id),
+    FOREIGN KEY (district_id) REFERENCES districts(id),
+    FOREIGN KEY (ward_id) REFERENCES wards(id)
 );
 
 
