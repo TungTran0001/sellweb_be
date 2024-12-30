@@ -15,7 +15,7 @@ addressModel.updateAddressIsdefaultIsFalseByUserId = (userId) => {
                 resolve(result);
             }
         );
-    })
+    });
 }
 
 addressModel.create = (userId, address) => {
@@ -47,7 +47,29 @@ addressModel.getAddressById = (id) => {
                 resolve(result);
             }
         );
-    })
+    });
+}
+
+addressModel.getAddressesByUserId = (userId) => {
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT a.id, a.name, a.phone, p.name AS province, d.name AS distric, w.name AS ward, a.specific_address, a.is_default
+                    FROM address AS a
+                    JOIN provinces AS p ON a.province_id = p.id
+                    JOIN districts AS d ON a.district_id = d.id
+                    JOIN wards AS w ON a.ward_id = w.id
+                    WHERE a.user_id = ?
+                    ORDER BY a.is_default DESC, a.id ASC`;
+        pool.query(
+            sql,
+            [userId],
+            (error, result) => {
+                if (error) {
+                    reject(error);
+                }
+                resolve(result);
+            }
+        );
+    });
 }
 
 module.exports = addressModel;

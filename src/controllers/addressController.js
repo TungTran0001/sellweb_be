@@ -27,5 +27,25 @@ addressController.createAddress = async (request, response) => {
     }
 }
 
+addressController.getUserAddresses = async (request, response) => {
+    const userId = request.userId; // Lấy userId từ token đã xác thực
+    try {
+        // Truy vấn danh sách địa chỉ của user
+        const addresses = await addressModel.getAddressesByUserId(userId);
+        if (addresses.length === 0) {
+            return response.status(404).json({ message: "No addresses found for this user." });
+        }
+        response.status(200).json({
+            message: "Addresses retrieved successfully.",
+            addresses,
+        });
+    } catch (error) {
+        console.error("Error retrieving addresses:", error);
+        response.status(500).json({ message: "An error occurred while retrieving addresses." })
+    }
+    // Truy vấn danh sách địa chỉ của user
+
+}
+
 module.exports = addressController;
 
