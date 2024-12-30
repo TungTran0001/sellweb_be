@@ -36,7 +36,12 @@ addressModel.create = (userId, address) => {
 
 addressModel.getAddressById = (id) => {
     return new Promise((resolve, reject) => {
-        const sql = `SELECT * FROM address WHERE id = ?`;
+        const sql = `SELECT a.id, a.name, a.phone, p.name AS province, d.name AS district, w.name AS ward, a.specific_address, a.is_default 
+                    FROM address AS a
+                    JOIN provinces AS p ON a.province_id = p.id
+                    JOIN districts AS d ON a.district_id = d.id
+                    JOIN wards AS w ON a.ward_id = w.id
+                    WHERE a.id = ?`;
         pool.query(
             sql,
             [id],
@@ -52,7 +57,7 @@ addressModel.getAddressById = (id) => {
 
 addressModel.getAddressesByUserId = (userId) => {
     return new Promise((resolve, reject) => {
-        const sql = `SELECT a.id, a.name, a.phone, p.name AS province, d.name AS distric, w.name AS ward, a.specific_address, a.is_default
+        const sql = `SELECT a.id, a.name, a.phone, p.name AS province, d.name AS district, w.name AS ward, a.specific_address, a.is_default
                     FROM address AS a
                     JOIN provinces AS p ON a.province_id = p.id
                     JOIN districts AS d ON a.district_id = d.id
