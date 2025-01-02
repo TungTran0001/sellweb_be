@@ -71,5 +71,29 @@ addressController.updateAddress = async (request, response) => {
         response.status(500).json({ message: "An error occurred while updating address."})
     }
 }
+
+addressController.deleteAddress = async (request, response) => {
+    try {
+        const { addressId } = request.params;
+        const userId = request.userId; // Lấy từ middleware xác thực JWT
+
+        // Kiểm tra xem địa chỉ có tồn tại và thuộc về user không
+        const address = await addressModel.getAddressByIdAndUserId(addressId, userId);
+        if (!address) {
+            return response.status(404).json({ message: 'Address not found or unauthorized' });
+        }
+        // Xóa địa chỉ
+        const result = await addressModel.deleteAddressByIdAndUserId(addressId, userId);
+        // Kiểm tra kết quả xóa
+        if (result.affectedRows === 0) {
+            return response.status(400).json({ message: 'Failed to delete address' });
+        }
+        response.status(200).json({ message: 'Address deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting address: ', error);
+        response.status(500).json({ message: 'Internal server error' });
+    }
+}
+
 module.exports = addressController;
 

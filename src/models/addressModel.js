@@ -110,4 +110,20 @@ addressModel.updateAddress = (addressId, userId, address) => {
     })
 }
 
+addressModel.deleteAddressByIdAndUserId = (addressId, userId) => {
+    return new Promise((resolve, reject) => {
+        const query = `DELETE FROM address WHERE id = ? AND user_id = ?`;
+        pool.query(
+            query,
+            [addressId, userId],
+            (error, result) => {
+                if (error) {
+                    reject(error);
+                }
+                resolve(result);
+            }
+        );
+    });
+}
+
 module.exports = addressModel;
