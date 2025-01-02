@@ -43,9 +43,33 @@ addressController.getUserAddresses = async (request, response) => {
         console.error("Error retrieving addresses:", error);
         response.status(500).json({ message: "An error occurred while retrieving addresses." })
     }
-    // Truy vấn danh sách địa chỉ của user
-
 }
 
+addressController.updateAddress = async (request, response) => {
+    const addressId = request.params.id; // Lấy ID địa chỉ từ URL
+    const userId = request.userId // Lấy userId từ token
+    const addressRequest = request.body;
+    try {
+        // Kiểm tra xem địa chỉ có thuộc về user hiện tại không
+        const [address] = await addressModel.getAddressByIdAndUserId(addressId, userId);
+        if (!address || address.length === 0) {
+            return response.status(404).json({ message: "Address not found or not authorized." });
+        }
+        // Nếu isDefault = true, thiết lập tất cả các địa chỉ khác của user về false
+        if (addressRequest.isDefault) {
+            await addressModel.updateAddressIsdefaultIsFalseByUserId(userId);
+        }
+        // Cập nhật địa chỉ
+       await addressModel.updateAddress(addressId, userId, addressRequest);
+       const addressUpdated = await addressModel.getAddressById(addressId);
+        return response.status(200).json({ 
+            message: "Address updated successfully.",
+            address: addressUpdated
+         });
+    } catch (error) {
+        console.error("Error updating address: ", error);
+        response.status(500).json({ message: "An error occurred while updating address."})
+    }
+}
 module.exports = addressController;
 

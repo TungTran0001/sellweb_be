@@ -77,4 +77,37 @@ addressModel.getAddressesByUserId = (userId) => {
     });
 }
 
+addressModel.getAddressByIdAndUserId = (id, userId) => {
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT * FROM address WHERE id = ? AND user_id = ?`;
+        pool.query(
+            sql,
+            [id, userId],
+            (error, result) => {
+                if (error) {
+                    reject(error);
+                }
+                resolve(result);
+            }
+        );
+    });
+}
+
+addressModel.updateAddress = (addressId, userId, address) => {
+    return new Promise((resolve, reject) => {
+        const sql = `UPDATE address SET name = ?, phone = ?, province_id = ?, district_id = ?, ward_id = ?, specific_address = ?, is_default = ?
+                    WHERE id = ? AND user_id = ?`;
+        pool.query(
+            sql,
+            [address.name, address.phone, address.provinceId, address.districtId, address.wardId, address.specificAddress, address.isDefault, addressId, userId],
+            (error, result) => {
+                if (error) {
+                    reject(error);
+                }
+                resolve(result);
+            }
+        );
+    })
+}
+
 module.exports = addressModel;

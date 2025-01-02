@@ -8,5 +8,6 @@ const verifyToken = require('../middlewares/verifyToken');
 
 addressRouter.post('/', verifyToken, addressController.createAddress);
 addressRouter.get('/', verifyToken, addressController.getUserAddresses);
+addressRouter.put('/:id', verifyToken, addressController.updateAddress);
 
 module.exports = addressRouter;
