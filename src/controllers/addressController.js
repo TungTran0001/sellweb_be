@@ -95,5 +95,29 @@ addressController.deleteAddress = async (request, response) => {
     }
 }
 
+addressController.setDefaultAddress = async (request, response) => {
+    try {
+        const { addressId } = request.params;
+        const userId = request.userId; // Lấy từ middleware xác thực JWT
+        // Kiểm tra địa chỉ có tồn tại và thuộc về user không
+        const address = await addressModel.getAddressByIdAndUserId(addressId, userId);
+        if (!address) {
+            return response.status(404).json({ message: "Address not found or unauthorized" });
+        }
+        // Đặt tất cả các địa chỉ khác của user thành không mặc định
+        await addressModel.unsetDefaultAddresses(userId);
+        // Thiết lập địa chỉ này là mặc định
+        const result = await addressModel.setDefaultAddress(addressId, userId);
+        // Kiểm tra kết quả cập nhật
+        if (result.affectedRows === 0) {
+            return response.status(400).json({ message: "Failed to set default address" });
+        }
+        return response.status(200).json({ message: "Default address set successfully" });
+    } catch (error) {
+        console.error("Error setting default address: ", error);
+        response.status(500).json({ message: "Internal server error" });
+    }
+}
+
 module.exports = addressController;
 

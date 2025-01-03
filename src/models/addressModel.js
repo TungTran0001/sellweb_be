@@ -126,4 +126,36 @@ addressModel.deleteAddressByIdAndUserId = (addressId, userId) => {
     });
 }
 
+addressModel.unsetDefaultAddresses = (userId) => {
+    return new Promise((resolve, reject) => {
+        const query = `UPDATE address SET is_default = false WHERE user_id = ?`;
+        pool.query(
+            query,
+            [userId],
+            (error, result) => {
+                if (error) {
+                    reject(error);
+                }
+                resolve(result);
+            }
+        );
+    });
+}
+
+addressModel.setDefaultAddress = (addressId, userId) => {
+    return new Promise((resolve, reject) => {
+        const query = `UPDATE address SET is_default = true WHERE id = ? AND user_id = ?`;
+        pool.query(
+            query,
+            [addressId, userId],
+            (error, result) => {
+                if (error) {
+                    reject(error);
+                }
+                resolve(result);
+            }
+        );
+    });
+}
+
 module.exports = addressModel;
