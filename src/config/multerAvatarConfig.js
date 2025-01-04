@@ -2,7 +2,7 @@ const path = require('path');
 const multer = require('multer');
 
 // Định nghĩa nơi lưu trữ file và đặt tên file
-const storage = multer.diskStorage({
+const avatarStorage = multer.diskStorage({
     destination: (req, file, cb) => {   
         cb(null, 'uploads/avatars'); // Thư mục lưu ảnh
     },
@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
 });
 
 // Kiểm tra định dạng file
-const fileFilter = (req, file, cb) => {
+const avatarFileFilter = (req, file, cb) => {
     const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
     if (allowedTypes.includes(file.mimetype)) {
         cb(null, true);
@@ -22,12 +22,12 @@ const fileFilter = (req, file, cb) => {
     }
 }
 
-const upload = multer({
-    storage: storage,
-    fileFilter: fileFilter,
+const uploadAvatar = multer({
+    storage: avatarStorage,
+    fileFilter: avatarFileFilter,
     limits: {
         fileSize: 2 * 1024 * 1024 // Giới hạn 2MB
     }
 });
 
-module.exports = upload;
+module.exports = uploadAvatar;

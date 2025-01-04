@@ -5,9 +5,10 @@ const profileRouter = express.Router();
 // Require
 const profileController = require('../controllers/profileController');
 const verifyToken = require('../middlewares/verifyToken');
-const upload = require('../middlewares/multerConfig');
+const uploadAvatar = require('../config/multerAvatarConfig');
+
 
 profileRouter.get('/', verifyToken, profileController.getProfile);
-profileRouter.put('/update', verifyToken, upload.single('avatar'), profileController.updateProfile);
+profileRouter.put('/update', verifyToken, uploadAvatar.single('avatar'), profileController.updateProfile);
 
 module.exports = profileRouter;
