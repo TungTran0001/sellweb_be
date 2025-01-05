@@ -35,4 +35,17 @@ bannerController.createBanner = async (request, response) => {
     }
 }
 
+bannerController.getHomePageBanners = async (request, response) => {
+    try {
+        const banners = await bannerModel.getHomePageBanners();
+        response.status(200).json({
+            message: "Home page banners fetched successfully",
+            banners,
+        });
+    } catch (error) {
+        console.error('Error fetching banners: ', error);
+        response.status(500).json({ message: "An error occurred while fetching banners" });
+    }
+}
+
 module.exports = bannerController;
