@@ -92,3 +92,19 @@ CREATE TABLE wards (
     district_id INT NOT NULL,                   -- Liên kết quận/huyện
     FOREIGN KEY (district_id) REFERENCES districts(id) ON DELETE CASCADE
 )
+
+-- create table banners
+CREATE TABLE banners (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,                -- ID duy nhất cho mỗi banner
+    title VARCHAR(255) NOT NULL,                         -- Tiêu đề banner
+    description TEXT,                                    -- Mô tả ngắn gọn về banner
+    image_url VARCHAR(500) NOT NULL,                     -- Đường dẫn URL của hình ảnh
+    redirect_url VARCHAR(500),                           -- URL chuyển hướng khi click vào banner
+    position ENUM('homepage', 'category', 'sidebar', 'footer', 'custom') NOT NULL,  -- Vị trí hiển thị
+    display_order INT NOT NULL DEFAULT 0,                -- Thứ tự hiển thị
+    start_date DATETIME NOT NULL,                        -- Ngày bắt đầu hiển thị
+    end_date DATETIME,                                   -- Ngày kết thúc hiển thị
+    is_active BOOLEAN NOT NULL DEFAULT TRUE,             -- Trạng thái kích hoạt banner
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,      -- Thời gian tạo
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP       -- Thời gian cập nhật
+)
