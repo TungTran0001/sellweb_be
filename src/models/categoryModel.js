@@ -31,4 +31,25 @@ categoryModel.createCategory = (categoryData) => {
     });
 }
 
+categoryModel.getNameImageIdQueryCategory = () => {
+    return new Promise((resolve, reject) => {
+        const sql = `
+            SELECT name, id_query, image_url 
+            FROM categories 
+            WHERE is_active = true 
+            ORDER BY display_order ASC
+        `;
+        pool.query(
+            sql,
+            (error, result) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(result);
+                }
+            }
+        );
+    })
+}
+
 module.exports = categoryModel;

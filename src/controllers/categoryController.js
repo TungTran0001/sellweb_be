@@ -32,8 +32,23 @@ categoryController.createCategory = async (request, response) => {
             category: {id: result.insertId, ...newCategory },
          })
     } catch (error) {
-        console.error("Failed creating categoory:", error);
+        console.error("Failed creating category:", error);
         response.status(500).json({ message: "An error occurred while creating the category" });
+    }
+}
+
+categoryController.getNameImageIdQueryCategory = async (request, response) => {
+    try {
+        // Gọi model để lấy dữ liệu từ database
+        const categories = await categoryModel.getNameImageIdQueryCategory();
+        // Trả về danh sách các trường đã yêu cầu
+        response.status(200).json({
+            message: "Categories retrieved successfully",
+            categories,
+        });
+    } catch (error) {
+        console.error("Failed getting category:", error);
+        response.status(500).json({ message: "An error occurred while getting the category" });
     }
 }
 

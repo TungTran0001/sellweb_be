@@ -7,5 +7,6 @@ const uploadCategory = require('../config/multerCategoryConfig');
 const categoryRouter = express.Router();
 
 categoryRouter.post('/', verifyToken, uploadCategory.single("category"), categoryController.createCategory);
+categoryRouter.get('/', verifyToken, categoryController.getNameImageIdQueryCategory);
 
 module.exports = categoryRouter;
