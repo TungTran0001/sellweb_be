@@ -9,6 +9,7 @@ const userRouter = require('./userRouter');
 const locationRouter = require('./locationRouter');
 const addressRouter = require('./addressRouter');
 const bannerRouter = require('./bannerRouter');
+const categoryRouter = require('./categoryRouter');
 
 apiRouter.use("/auth", authRouter);
 apiRouter.use("/notifications", notificationRouter);
@@ -17,5 +18,6 @@ apiRouter.use("/users", userRouter);
 apiRouter.use("/locations", locationRouter);
 apiRouter.use("/addresses", addressRouter);
 apiRouter.use("/banners", bannerRouter);
+apiRouter.use("/categories", categoryRouter);
 
 module.exports = apiRouter;

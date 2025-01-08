@@ -108,3 +108,18 @@ CREATE TABLE banners (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,      -- Thời gian tạo
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP       -- Thời gian cập nhật
 )
+
+-- create table categories
+CREATE TABLE categories (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,                   -- ID duy nhất của danh mục
+    name VARCHAR(255) NOT NULL,                             -- Tên danh mục sản phẩm
+    id_query VARCHAR(100) NOT NULL UNIQUE,                  -- Mã hóa truy xuất trang (URL-friendly)
+    parent_id BIGINT DEFAULT NULL,                          -- ID danh mục cha (nếu có)
+    description TEXT,                                       -- Mô tả chi tiết danh mục
+    image_url VARCHAR(500),                                 -- Hình ảnh đại diện cho danh mục
+    display_order INT NOT NULL DEFAULT 0,                   -- Thứ tự hiển thị
+    is_active BOOLEAN NOT NULL DEFAULT TRUE,                -- Trạng thái kích hoạt danh mục
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,         -- Thời gian tạo
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, -- Thời gian cập nhật
+    FOREIGN KEY (parent_id) REFERENCES categories(id) ON DELETE SET NULL        -- Liên kết danh mục cha
+)
