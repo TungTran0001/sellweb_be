@@ -2,6 +2,7 @@ const express = require('express');
 
 const uploadProduct = require('../config/multerProductConfig');
 const productController = require('../controllers/productController.js');
+const verifyToken = require('../middlewares/verifyToken.js');
 
 const productRoutes = express.Router();
 
@@ -14,5 +15,7 @@ productRoutes.post(
     ]), 
     productController.createProduct
 );
+
+productRoutes.get('/', verifyToken, productController.getProductCardInfoProducts);
 
 module.exports = productRoutes;

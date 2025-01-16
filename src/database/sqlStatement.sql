@@ -143,8 +143,8 @@ CREATE TABLE products (
     category_id BIGINT NOT NULL,                            -- ID danh mục của sản phẩm (liên kết bảng categories)
     brand_id BIGINT,                                        -- ID thương hiệu của sản phẩm (liên kết bảng brands)
     description TEXT,                                       -- Mô tả chi tiết sản phẩm
-    price DECIMAL(15,2) NOT NULL,                           -- Giá niêm yết sản phẩm
-    discount_price DECIMAL(15,2) DEFAULT NULL,              -- Giá khuyến mãi (nếu có)
+    price DECIMAL(15,3) NOT NULL,                           -- Giá niêm yết sản phẩm
+    discount_price DECIMAL(15,3) DEFAULT NULL,              -- Giá khuyến mãi (nếu có)
     stock INT NOT NULL DEFAULT 0,                           -- Số lượng sản phẩm còn trong kho
     number_sold INT NOT NULL DEFAULT 0,                     -- Số lượng sản phẩm đã bán
     image_url VARCHAR(500),                                 -- Ảnh đại diện của sản phẩm

@@ -22,4 +22,20 @@ productModel.createProduct = (product) => {
     });
 };
 
+productModel.getProductCardInfoProducts = () => {
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT name, id_query, price, number_sold, image_url FROM products WHERE is_active = true`;
+        pool.query(
+            sql,
+            (error, result) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(result);
+                }
+            }
+        );
+    });
+}
+
 module.exports = productModel;

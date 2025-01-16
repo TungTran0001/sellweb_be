@@ -60,4 +60,19 @@ productController.createProduct = async (request, response) => {
     }
 }
 
+productController.getProductCardInfoProducts = async (request, response) => {
+    try {
+        // Gọi model để lấy dữ liệu từ database
+        const products = await productModel.getProductCardInfoProducts();
+         // Trả về danh sách các trường đã yêu cầu
+         response.status(200).json({
+            message: "Product retrieved successfully",
+            products,
+         });
+    } catch (error) {
+        console.error("Failed getting product:", error);
+        response.status(500).json({ message: "An error occurred while getting the product" });
+    }
+}
+
 module.exports = productController;
