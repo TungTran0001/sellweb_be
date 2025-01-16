@@ -10,6 +10,7 @@ const locationRouter = require('./locationRouter');
 const addressRouter = require('./addressRouter');
 const bannerRouter = require('./bannerRouter');
 const categoryRouter = require('./categoryRouter');
+const productRoutes = require('./productRoutes');
 
 apiRouter.use("/auth", authRouter);
 apiRouter.use("/notifications", notificationRouter);
@@ -19,5 +20,6 @@ apiRouter.use("/locations", locationRouter);
 apiRouter.use("/addresses", addressRouter);
 apiRouter.use("/banners", bannerRouter);
 apiRouter.use("/categories", categoryRouter);
+apiRouter.use("/products", productRoutes);
 
 module.exports = apiRouter;

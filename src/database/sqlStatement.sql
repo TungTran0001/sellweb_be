@@ -123,3 +123,37 @@ CREATE TABLE categories (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, -- Thời gian cập nhật
     FOREIGN KEY (parent_id) REFERENCES categories(id) ON DELETE SET NULL        -- Liên kết danh mục cha
 )
+
+-- create table brands
+CREATE TABLE brands (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,                   -- ID thương hiệu
+    name VARCHAR(255) NOT NULL,                             -- Tên thương hiệu
+    id_query VARCHAR(100) NOT NULL UNIQUE,                  -- Mã hóa URL-friendly
+    logo_url VARCHAR(500),                                  -- Đường dẫn logo thương hiệu
+    description TEXT,                                       -- Mô tả thương hiệu
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,         -- Thời gian tạo
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP      -- Thời gian cập nhật
+)
+
+-- create table products
+CREATE TABLE products (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,                   -- ID duy nhất của sản phẩm
+    name VARCHAR(255) NOT NULL,                             -- Tên sản phẩm
+    id_query VARCHAR(100) NOT NULL UNIQUE,                  -- Mã hóa truy xuất sản phẩm (URL-friendly)
+    category_id BIGINT NOT NULL,                            -- ID danh mục của sản phẩm (liên kết bảng categories)
+    brand_id BIGINT,                                        -- ID thương hiệu của sản phẩm (liên kết bảng brands)
+    description TEXT,                                       -- Mô tả chi tiết sản phẩm
+    price DECIMAL(15,2) NOT NULL,                           -- Giá niêm yết sản phẩm
+    discount_price DECIMAL(15,2) DEFAULT NULL,              -- Giá khuyến mãi (nếu có)
+    stock INT NOT NULL DEFAULT 0,                           -- Số lượng sản phẩm còn trong kho
+    number_sold INT NOT NULL DEFAULT 0,                     -- Số lượng sản phẩm đã bán
+    image_url VARCHAR(500),                                 -- Ảnh đại diện của sản phẩm
+    gallery JSON DEFAULT NULL,                              -- Bộ sưu tập hình ảnh (nhiều hình ảnh)
+    rating FLOAT DEFAULT 0.0,                               -- Đánh giá trung bình
+    reviews_count INT DEFAULT 0,                            -- Số lượng đánh giá
+    is_active BOOLEAN NOT NULL DEFAULT TRUE,                -- Trạng thái kích hoạt
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,         -- Thời gian tạo
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,     -- Thời gian cập nhật
+    FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE,          -- Liên kết bảng categories
+    FOREIGN KEY (brand_id) REFERENCES brands(id) ON DELETE SET NULL                 -- Liên kết bảng brands
+)
