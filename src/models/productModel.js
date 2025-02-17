@@ -38,4 +38,66 @@ productModel.getProductCardInfoProducts = () => {
     });
 }
 
+productModel.getProductDetails = (id_query) => {
+    return new Promise((resolve, reject) => {
+        const sql = `
+            SELECT id, name, price, discount_price, stock, number_sold, image_url, gallery, rating, reviews_count
+            FROM products WHERE id_query = ? AND is_active = 1 
+        `;
+        pool.query(
+            sql,
+            [id_query],
+            (error, result) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(result);
+                }
+            }
+        );
+    });
+}
+
+productModel.getColorsByProducId = (productId) => {
+    return new Promise((resolve, reject) => {
+        const sql = `
+            SELECT id, color_name, color_code, image_url
+            FROM product_colors
+            WHERE product_id = ?
+        `;
+        pool.query(
+            sql,
+            [productId],
+            (error, result) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(result);
+                }
+            }
+        );
+    });
+}
+
+productModel.getSizeByProductId = (productId) => {
+    return new Promise((resolve, reject) => {
+        const sql = `
+            SELECT id, size_name
+            FROM product_sizes
+            WHERE product_id = ?
+        `;
+        pool.query(
+            sql,
+            [productId],
+            (error, result) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(result);
+                }
+            }
+        );
+    });
+}
+
 module.exports = productModel;

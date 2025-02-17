@@ -15,7 +15,6 @@ productRoutes.post(
     ]), 
     productController.createProduct
 );
-
 productRoutes.get('/', verifyToken, productController.getProductCardInfoProducts);
-
+productRoutes.get('/details/:id_query', verifyToken, productController.getProductDetails);
 module.exports = productRoutes;

@@ -23,10 +23,8 @@ CREATE TABLE notifications (
                                               -- Loại thông báo (đơn hàng, khuyến mãi, hệ thống, hoặc tùy chỉnh)
     link VARCHAR(255),                        -- Liên kết tới chi tiết liên quan (nếu có)
     is_read BOOLEAN DEFAULT FALSE,            -- Trạng thái đã đọc (true/false)
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
-                                              -- Thời gian tạo thông báo
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                                              -- Thời gian cập nhật thông báo
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Thời gian tạo thông báo
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, -- Thời gian cập nhật thông báo
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
@@ -40,10 +38,8 @@ CREATE TABLE profiles (
     date_of_birth DATE,                       -- Ngày sinh
     address TEXT,                             -- Địa chỉ chi tiết
     avatar_url VARCHAR(255),                  -- URL ảnh đại diện
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
-                                              -- Thời gian tạo profile
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
-                                              -- Thời gian cập nhật profile
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Thời gian tạo profile
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, -- Thời gian cập nhật profile
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
@@ -156,4 +152,42 @@ CREATE TABLE products (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,     -- Thời gian cập nhật
     FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE,          -- Liên kết bảng categories
     FOREIGN KEY (brand_id) REFERENCES brands(id) ON DELETE SET NULL                 -- Liên kết bảng brands
+)
+
+-- create table product_colors
+CREATE TABLE product_colors (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,                       -- ID duy nhất của màu sắc
+    product_id BIGINT NOT NULL,                                 -- ID sản phẩm liên kết
+    color_name VARCHAR(100) NOT NULL,                           -- Tên màu sắc (ví dụ: "Red", "Blue")
+    color_code VARCHAR(20),                                     -- Mã màu sắc (ví dụ: "#FF0000")
+    image_url VARCHAR(500),                                     -- Ảnh đại diện của màu sắc
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,             -- Thời gian tạo
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, -- Thời gian cập nhật
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+)
+
+-- create table product_sizes
+CREATE TABLE product_sizes (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,                   -- ID duy nhất của kích thước
+    product_id BIGINT NOT NULL,                             -- ID sản phẩm liên kết
+    size_name VARCHAR(50) NOT NULL,                         -- Tên kích thước (ví dụ: "S", "M", "L", "XL")
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,         -- Thời gian tạo
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, -- Thời gian cập nhật
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+)
+
+-- create table product_variations 
+CREATE TABLE product_variations (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,                   -- ID duy nhất của biến thể
+    product_id BIGINT NOT NULL,                             -- ID sản phẩm liên kết
+    color_id BIGINT NOT NULL,                               -- ID màu sắc liên kết
+    size_id BIGINT NOT NULL,                                -- ID kích thước liên kết
+    stock INT NOT NULL DEFAULT 0,                           -- Số lượng trong kho
+    price DECIMAL(15,3) DEFAULT NULL,                       -- Giá riêng cho biến thể (nếu khác giá chính)
+    discount_price DECIMAL(15,3) DEFAULT NULL,              -- Giá khuyến mãi riêng cho biến thể (nếu có)
+    created_at TIMESTAMP DEFAULT  CURRENT_TIMESTAMP,       -- Thời gian tạo
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, -- Thời gian cập nhật
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
+    FOREIGN KEY (color_id) REFERENCES product_colors(id) ON DELETE CASCADE,
+    FOREIGN KEY (size_id) REFERENCES product_sizes(id) ON DELETE CASCADE
 )
