@@ -84,14 +84,12 @@ productController.getProductDetails = async (request, response) => {
         if (!product) {
             return response.status(404).json({ message: "Product not found" });
         }
-        const addresses = await addressModel.getAddressesByUserId(request.userId);
         const colors = await productModel.getColorsByProducId(product.id);
         const sizes = await productModel.getSizeByProductId(product.id);
         response.status(200).json({
             message: "Product details fetched successfully",
             productDetails: {
                 product,
-                addresses,
                 colors,
                 sizes,
             }
