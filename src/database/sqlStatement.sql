@@ -191,3 +191,29 @@ CREATE TABLE product_variations (
     FOREIGN KEY (color_id) REFERENCES product_colors(id) ON DELETE CASCADE,
     FOREIGN KEY (size_id) REFERENCES product_sizes(id) ON DELETE CASCADE
 )
+
+CREATE TABLE cart (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,                   -- ID duy nhất của giỏ hàng
+    user_id INT NOT NULL,                                   -- ID người dùng liên kết
+    total_price DECIMAL(15,3) NOT NULL DEFAULT 0,           -- Tổng giá trị giỏ hàng
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,         -- Thời gian tạo
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, -- Thời gian cập nhật
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+)
+
+CREATE TABLE cart_items (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,                   -- ID duy nhất của mỗi mục giỏ hàng
+    cart_id BIGINT NOT NULL,                                -- ID giỏ hàng liên kết
+    product_id BIGINT NOT NULL,                             -- ID sản phẩm liên kết
+    color_id BIGINT DEFAULT NULL,                           -- ID màu sắc liên kết (nếu có)
+    size_id BIGINT DEFAULT NULL,                            -- ID kích thước liên kết (nếu có)
+    quantity INT NOT NULL DEFAULT 1,                        -- Số lượng sản phẩm
+    price DECIMAL(15,3) NOT NULL,                           -- Giá tại thời điểm thêm vào giỏ hàng
+    total_price DECIMAL(15,3) NOT NULL,                     -- Tổng tiền của mục giỏ hàng này
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,         -- Ngày thêm vào giỏ hàng
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, -- Ngày cập nhật
+    FOREIGN KEY (cart_id) REFERENCES cart(id) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
+    FOREIGN KEY (color_id) REFERENCES product_colors(id) ON DELETE SET NULL,
+    FOREIGN KEY (size_id) REFERENCES product_sizes(id) ON DELETE SET NULL
+)

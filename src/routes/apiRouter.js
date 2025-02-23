@@ -11,6 +11,7 @@ const addressRouter = require('./addressRouter');
 const bannerRouter = require('./bannerRouter');
 const categoryRouter = require('./categoryRouter');
 const productRoutes = require('./productRoutes');
+const cartRouter = require('./cartRoutes');
 
 apiRouter.use("/auth", authRouter);
 apiRouter.use("/notifications", notificationRouter);
@@ -21,5 +22,6 @@ apiRouter.use("/addresses", addressRouter);
 apiRouter.use("/banners", bannerRouter);
 apiRouter.use("/categories", categoryRouter);
 apiRouter.use("/products", productRoutes);
+apiRouter.use("/carts", cartRouter);
 
 module.exports = apiRouter;
