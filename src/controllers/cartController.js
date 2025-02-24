@@ -64,4 +64,29 @@ cartController.addToCart = async (req, res) => {
     }
 };
 
+cartController.getLatestCartItems = async (req, res) => {
+    try {
+        const user_id = req.userId;
+        const [cart] = await pool.execute("SELECT id FROM cart WHERE user_id = ?", [user_id]);
+        if (!cart.length) {
+            return res.status(200).json({ message: "Giỏ hàng trống", data: [] });
+        }
+        const cart_id = cart[0].id;
+        const [cartItems] = await pool.execute(
+            `SELECT ci.id AS cart_item_id, p.id AS product_id, p.name AS product_name, p.image_url, p.id_query, ci.price, ci.quantity
+            FROM cart_items ci
+            JOIN products p ON ci.product_id = p.id
+            WHERE ci.cart_id = ?
+            GROUP BY p.id
+            ORDER BY ci.created_at DESC
+            LIMIT 5`,
+            [cart_id]
+        );
+        res.status(200).json({ message: "Lấy dữ liệu thành công", data: cartItems });
+    } catch (error) {
+        console.error("Error getting latest cart items:", error);
+        res.status(500).json({ message: "Lỗi server" });
+    }
+}
+
 module.exports = cartController;
